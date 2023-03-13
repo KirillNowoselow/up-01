@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ClassLibrary1;
 
 namespace mmtr
 {
@@ -23,25 +22,24 @@ namespace mmtr
     {
         public MainWindow()
         {
-            User.CreateAdmin();
             InitializeComponent();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("login_TextBox.Text => " + login_TextBox.Text + ".");
-            Console.WriteLine("password_PasswordBox.Password => " + password_PasswordBox.Password + ".");
-            User user = User.LogIn(login_TextBox.Text, password_PasswordBox.Password);
-            if (user == null)
-                MessageBox.Show("Неверный логин или пароль");
-            else
+            using (var db = new Entities())
             {
-                Hide();
-                Log log = new Log();
-                log.ShowDialog();
-                Show();
-            }
-
+                var users = db.User.ToList().Where(u => u.UserName == login_TextBox.Text && u.Password == password_PasswordBox.Password);
+                if (users.Count() == 0)
+                MessageBox.Show("Неверный логин или пароль");
+                else
+                {
+                    Hide();
+                    Log log = new Log();
+                    log.ShowDialog();
+                    Show();
+                    }
+                }
         }
     }
 }

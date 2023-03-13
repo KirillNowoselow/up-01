@@ -1,5 +1,4 @@
-﻿using ClassLibrary1;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -25,20 +24,22 @@ namespace mmtr
         public Log()
         {
             InitializeComponent();
-            Group.CreateGroups();
 
-            using (var db = new DBContext())
+            using (var db = new Entities())
             {
-                db.Groups.ToList().ForEach(g => groups.Items.Add(g));
+                db.Group.ToList().ForEach(group =>
+                {
+                    groups.Items.Add(group);
+                });
             }
         }
 
         private void filterTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             groups.Items.Clear();
-            using (var db = new DBContext())
+            using (var db = new Entities())
             {
-                db.Groups.ToList().ForEach(i =>
+                db.Group.ToList().ForEach(i =>
                 {
                     if (i.Code.Contains(filterTextBox.Text))
                         groups.Items.Add(i);
