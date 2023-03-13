@@ -27,10 +27,7 @@ namespace mmtr
 
             using (var db = new Entities())
             {
-                db.Group.ToList().ForEach(group =>
-                {
-                    groups.Items.Add(group);
-                });
+                Singletone.CurrentUser.Jurnal.ToList().ForEach(j => groups.Items.Add(j.Group1));
             }
         }
 
@@ -44,6 +41,16 @@ namespace mmtr
                     if (i.Code.Contains(filterTextBox.Text))
                         groups.Items.Add(i);
                 });
+            }
+        }
+
+        private void groups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            using (var db = new Entities())
+            {
+                Singletone.CurrentUser.Jurnal.Where(j => j.Group1 == groups.SelectedItem)
+                    .ToList().ForEach(j => disciplines.Items.Add(j.Discipline1));
             }
         }
     }

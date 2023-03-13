@@ -31,9 +31,10 @@ namespace mmtr
             {
                 var users = db.User.ToList().Where(u => u.UserName == login_TextBox.Text && u.Password == password_PasswordBox.Password);
                 if (users.Count() == 0)
-                MessageBox.Show("Неверный логин или пароль");
+                    MessageBox.Show("Неверный логин или пароль");
                 else
                 {
+                    Singletone.CurrentUser = users.First();
                     Hide();
                     Log log = new Log();
                     log.ShowDialog();
