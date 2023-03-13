@@ -36,10 +36,10 @@ namespace mmtr
             groups.Items.Clear();
             using (var db = new Entities())
             {
-                db.Group.ToList().ForEach(i =>
+                Singletone.CurrentUser.Jurnal.ToList().ForEach(j =>
                 {
-                    if (i.Code.Contains(filterTextBox.Text))
-                        groups.Items.Add(i);
+                    if (j.Group1.Code.Contains(filterTextBox.Text))
+                        groups.Items.Add(j.Group);
                 });
             }
         }
